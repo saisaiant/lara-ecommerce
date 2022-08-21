@@ -3,7 +3,21 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 import Container from '@/Components/Container.vue';
 import Card from '@/Components/Card/Card.vue';
+import Table from '@/Components/Table/Table.vue';
+import Td from '@/Components/Table/Td.vue'
+import Actions from '@/Components/Table/Actions.vue';
 
+
+defineProps({
+    roles: {
+        type: Object,
+        default: () => ({}),
+    },
+    headers: {
+        type: Array,
+        default: () => [],
+    }
+})
 </script>
 
 <template>
@@ -18,7 +32,19 @@ import Card from '@/Components/Card/Card.vue';
 
         <Container>
             <Card>
-                Roles
+                <Table :headers="headers" :items="roles">
+                    <template v-slot="{ item }">
+                        <Td>
+                            {{ item.name }}
+                        </Td>
+                        <Td>
+                            {{ item.created_at_formatted }}
+                        </Td>
+                        <Td>
+                            <Actions />
+                        </Td>
+                    </template>                    
+                </Table>
             </Card>
         </Container>
         
