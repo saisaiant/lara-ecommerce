@@ -3,21 +3,22 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 import Container from '@/Components/Container.vue';
 import Card from '@/Components/Card/Card.vue';
+
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Roles" />
 
     <BreezeAuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                Roles
             </h2>
         </template>
-        
+
         <Container>
             <Card>
-                Dashboard
+                Roles
             </Card>
         </Container>
         
