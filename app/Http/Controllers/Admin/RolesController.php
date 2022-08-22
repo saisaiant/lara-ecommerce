@@ -8,16 +8,21 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Http\Requests\Admin\RolesRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class RolesController extends Controller
 {
     public function index(Request $request)
     {
-        $roles = Role::select([
+        $roles = Role::query()
+        ->select([
             'id',
             'name',
             'created_at'
-        ])->latest('id')->paginate(10);
+        ])
+        ->when($request->name, fn(Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
+        ->latest('id')
+        ->paginate(10);
 
         return Inertia::render('Role/Index', [
             'roles' => RoleResource::collection($roles),
@@ -34,7 +39,8 @@ class RolesController extends Controller
                     'label' => 'Actions',
                     'name' => 'actions'
                 ]
-            ]
+            ],
+            'filters' => (object) $request->all()
         ]);
     }
 
