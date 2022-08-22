@@ -8,6 +8,7 @@ export default function (params) {
         name: "",
     });
 
+    const isLoading = ref(false);
     const fetchItemsHandler = ref(null);
 
     function fetchItems() {
@@ -15,6 +16,12 @@ export default function (params) {
             preserveState: true,
             preserveScroll: true,
             replace: true,
+            onBefore: () => {
+                isLoading.value = true;
+            },
+            onFinish: () => {
+                isLoading.value = false;
+            },
         });
     }
 
@@ -37,5 +44,6 @@ export default function (params) {
 
     return {
         filters,
+        isLoading,
     };
 }
