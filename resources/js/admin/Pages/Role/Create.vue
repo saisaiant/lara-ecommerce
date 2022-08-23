@@ -8,6 +8,7 @@ import Button from "@/Components/Button.vue";
 import BreezeInput from "@/Components/Input.vue";
 import InputError from "@/Components/InputError.vue";
 import BreezeLabel from "@/Components/Label.vue";
+import Permissions from "./Permissions.vue";
 
 const props = defineProps({
     edit: {
@@ -25,6 +26,9 @@ const props = defineProps({
     routeResourceName: {
         type: String,
         required: true,
+    },
+    permissions: {
+        type: Array,
     },
 });
 
@@ -81,5 +85,7 @@ onMounted(() => {
                 </form>
             </Card>
         </Container>
+
+        <Permissions class="mt-6" :role="item" :permissions="permissions" />
     </BreezeAuthenticatedLayout>
 </template>
