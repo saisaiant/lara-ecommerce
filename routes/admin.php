@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\AttachPermissionToRoleController;
@@ -13,6 +14,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('roles/detach-permission', DetachPermissionFromRoleController::class)->name('roles.detach-permission');
     Route::resource('roles', RolesController::class);
     Route::resource('permissions', PermissionsController::class);
+    Route::resource('users', UsersController::class);
 });
 
 require __DIR__.'/auth.php';
