@@ -5,9 +5,8 @@ import { Head, useForm } from "@inertiajs/inertia-vue3";
 import Container from "@/Components/Container.vue";
 import Card from "@/Components/Card/Card.vue";
 import Button from "@/Components/Button.vue";
-import BreezeInput from "@/Components/Input.vue";
-import InputError from "@/Components/InputError.vue";
-import BreezeLabel from "@/Components/Label.vue";
+import InputGroup from "@/Components/InputGroup.vue";
+import SelectGroup from "@/Components/SelectGroup.vue";
 
 const props = defineProps({
     edit: {
@@ -26,10 +25,18 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    roles: {
+        type: Array,
+        required: true,
+    },
 });
 
 const form = useForm({
     name: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+    roleId: "",
 });
 
 const submit = () => {
@@ -45,6 +52,8 @@ const submit = () => {
 onMounted(() => {
     if (props.edit) {
         form.name = props.item.name;
+        form.email = props.item.email;
+        form.roleId = props.item.roles[0]?.id;
     }
 });
 </script>
@@ -62,16 +71,41 @@ onMounted(() => {
         <Container>
             <Card>
                 <form @submit.prevent="submit">
-                    <div>
-                        <BreezeLabel value="Name" />
-                        <BreezeInput
-                            type="text"
-                            class="mt-1 block w-full"
+                    <div class="grid grid-cols-2 gap-6">
+                        <InputGroup
+                            label="Name"
                             v-model="form.name"
+                            :error-message="form.errors.name"
                             required
-                            autofocus
                         />
-                        <InputError class="mt-1" :message="form.errors.name" />
+                        <InputGroup
+                            type="email"
+                            label="Email"
+                            v-model="form.email"
+                            :error-message="form.errors.email"
+                            required
+                        />
+                        <InputGroup
+                            type="password"
+                            label="Password"
+                            v-model="form.password"
+                            :error-message="form.errors.password"
+                            :required="!edit"
+                        />
+                        <InputGroup
+                            type="password"
+                            label="Confirm Password"
+                            v-model="form.passwordConfirmation"
+                            :error-message="form.errors.passwordConfirmation"
+                            :required="!edit"
+                        />
+                        <SelectGroup
+                            label="Role"
+                            v-model="form.roleId"
+                            :items="roles"
+                            :error-message="form.errors.roleId"
+                            required
+                        />
                     </div>
                     <div class="mt-4">
                         <Button :disabled="form.processing">

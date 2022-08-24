@@ -19,6 +19,8 @@ export default function (params) {
                 id: itemToDelete.value.id,
             }),
             {
+                preserveScroll: true,
+                preserveState: true,
                 onBefore: () => {
                     isDeleting.value = true;
                 },

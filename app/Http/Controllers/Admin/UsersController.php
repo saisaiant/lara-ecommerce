@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Models\User;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\Admin\UsersRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,30 +77,34 @@ class UsersController extends Controller
             'title' => 'Add User',
             'edit' => false,
             'routeResourceName' => $this->routeResourceName,
+            'roles' => RoleResource::collection(Role::get(['id', 'name'])),
         ]);
     }
 
     public function store(UsersRequest $request)
     {
-        // dd(123);
-        User::create($request->validated());
+       $user = User::create($request->safe()->only(['name', 'email', 'password']));
+       $user->assignRole($request->roleId);
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'User created successfully');
     }
 
     public function edit(User $user)
     {
+        $user->load(['roles:roles.id']);
         return Inertia::render('User/Create', [
             'edit' => true,
             'title' => 'Edit User',
             'item' => new UserResource($user),
             'routeResourceName' => $this->routeResourceName,
+            'roles' => RoleResource::collection(Role::get(['id', 'name'])),
         ]);
     }
 
     public function update(UsersRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $user->update($request->safe()->only(['name', 'email', 'password']));
+        $user->syncRoles($request->roleId);
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'User updated successfully');
     }
