@@ -20,13 +20,13 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@admin.com',
-            'password' => bcrypt('admin123'),
+            'password' => 'admin123',
         ]);
 
         \App\Models\User::factory()->create([
             'name' => 'Editor',
             'email' => 'editor@editor.com',
-            'password' => bcrypt('editor123'),
+            'password' => 'editor123',
         ]);
 
         $this->call(RolesSeeder::class);
