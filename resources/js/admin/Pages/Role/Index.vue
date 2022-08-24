@@ -15,6 +15,8 @@ import Input from "@/Components/Input.vue";
 import useDeleteItem from "@/Composables/useDeleteItem.js";
 import useFilters from "@/Composables/useFilters.js";
 import Filters from "./Filters.vue";
+import AddNew from "@/Components/AddNew.vue";
+
 
 const props = defineProps({
     title: {
@@ -67,13 +69,17 @@ const { filters, isLoading } = useFilters({
         </template>
 
         <Container>
-            <Filters v-model="filters" />
+            <AddNew>
+                <Button
+                    v-if="can.create"
+                    :href="route(`admin.${routeResourceName}.create`)"
+                    >Add New</Button
+                >
+                <template #filters>
+                    <Filters v-model="filters" class="mt-4" />
+                </template>
+            </AddNew>
 
-            <Button
-                v-if="can.create"
-                :href="route(`admin.${routeResourceName}.create`)"
-                >Add New</Button
-            >
             <Card class="mt-4" :is-loading="isLoading">
                 <Table :headers="headers" :items="items">
                     <template v-slot="{ item }">
