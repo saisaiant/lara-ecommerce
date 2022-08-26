@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\PermissionsController;
@@ -17,6 +18,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('permissions', PermissionsController::class);
     Route::resource('users', UsersController::class);
     Route::resource('categories', CategoriesController::class);
+    Route::resource('products', ProductsController::class);
 });
 
 require __DIR__.'/auth.php';

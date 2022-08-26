@@ -1,10 +1,16 @@
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function (params) {
     const { filters: defaultFilters, routeResourceName } = params;
 
     const filters = ref(defaultFilters);
+
+    const isFilled = computed(() => {
+        return Object.values(filters.value).some(
+            (v) => !["", null, undefined].includes(v)
+        );
+    });
 
     const isLoading = ref(false);
     const fetchItemsHandler = ref(null);
@@ -39,5 +45,6 @@ export default function (params) {
     return {
         filters,
         isLoading,
+        isFilled,
     };
 }

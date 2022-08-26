@@ -32,7 +32,7 @@ class PermissionsController extends Controller
         ])
         ->when($request->name, fn(Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
         ->latest('id')
-        ->paginate(10);
+        ->paginate(30);
 
         return Inertia::render('Permission/Index', [
             'title' => 'Permissions',
