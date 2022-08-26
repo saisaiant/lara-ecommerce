@@ -1,6 +1,6 @@
 <script setup>
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
-import { onMounted, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import kebabCase from "lodash/kebabCase";
 import replace from "lodash/replace";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
@@ -28,17 +28,33 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    rootCategories: {
+    categories: {
         type: Array,
         required: true,
     },
 });
 
 const form = useForm({
-    name: "",
-    slug: "",
-    active: true,
-    parentId: "",
+    name: props.item.name ?? "",
+    slug: props.item.slug ?? "",
+    description: props.item.description ?? "",
+    costPrice: props.item.cost_price ?? "",
+    price: props.item.price ?? "",
+    active: props.item.active ?? true,
+    featured: props.item.featured ?? false,
+    showOnSlider: props.item.show_on_slider ?? false,
+    categoryId: props.item.category_id ?? "",
+    subCategoryId: props.item.sub_category_id ?? "",
+});
+
+const subCategories = computed(() => {
+    if (!form.categoryId) return [];
+
+    let category = props.categories.find((c) => c.id == form.categoryId);
+
+    if (!category) return [];
+
+    return category.children || [];
 });
 
 watch(
@@ -60,14 +76,14 @@ const submit = () => {
         : form.post(route(`admin.${props.routeResourceName}.store`));
 };
 
-onMounted(() => {
-    if (props.edit) {
-        form.name = props.item.name;
-        form.slug = props.item.slug;
-        form.active = props.item.active;
-        form.parentId = props.item.parent_id;
-    }
-});
+// onMounted(() => {
+//     if (props.edit) {
+//         form.name = props.item.name;
+//         form.slug = props.item.slug;
+//         form.active = props.item.active;
+//         form.parentId = props.item.parent_id;
+//     }
+// });
 </script>
 
 <template>
@@ -96,16 +112,47 @@ onMounted(() => {
                             :error-message="form.errors.slug"
                             required
                         />
-                        <SelectGroup
-                            label="Parent Category"
-                            v-model="form.parentId"
-                            :items="rootCategories"
-                            :error-message="form.errors.parentId"
+                        <InputGroup
+                            label="Cost Price"
+                            v-model="form.costPrice"
+                            :error-message="form.errors.costPrice"
+                            required
                         />
-                        <div class="mt-6">
+                        <InputGroup
+                            label="Selling Price"
+                            v-model="form.price"
+                            :error-message="form.errors.price"
+                            required
+                        />
+                        <div class="col-span-2">
+                            <div class="grid grid-cols-2 gap-6">
+                                <SelectGroup
+                                    label="Category"
+                                    v-model="form.categoryId"
+                                    :items="categories"
+                                    :error-message="form.errors.categoryId"
+                                />
+                                <SelectGroup
+                                    v-if="subCategories.length > 0"
+                                    label="Sub Category"
+                                    v-model="form.subCategoryId"
+                                    :items="subCategories"
+                                    :error-message="form.errors.subCategoryId"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-span-2 flex items-center space-x-2">
                             <CheckboxGroup
                                 label="Active"
                                 v-model:checked="form.active"
+                            />
+                            <CheckboxGroup
+                                label="Featured"
+                                v-model:checked="form.featured"
+                            />
+                            <CheckboxGroup
+                                label="Show on Slider"
+                                v-model:checked="form.showOnSlider"
                             />
                         </div>
                     </div>

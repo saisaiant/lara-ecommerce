@@ -128,7 +128,7 @@ class ProductsController extends Controller
             'title' => 'Add Product',
             'edit' => false,
             'routeResourceName' => $this->routeResourceName,
-            'rootProducts' => ProductResource::collection(Product::root()->get(['id', 'name'])),
+            'categories' => ProductResource::collection(Category::root()->with(['children:id,name,parent_id'])->get(['id', 'name'])),
         ]);
     }
 
