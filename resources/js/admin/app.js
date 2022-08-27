@@ -1,5 +1,4 @@
 // import './bootstrap';
-// import '../../css/admin/app.css';
 import "../../css/admin/app.css";
 
 import { createApp, h } from "vue";
