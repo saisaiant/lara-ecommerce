@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\RoleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -28,8 +27,8 @@ class CategoryResource extends JsonResource
             'children_count' => $this->whenNotNull($this->children_count),
             'can' => [
                 'edit' => $request->user()?->can('edit category'),
-                'delete' => $request->user()?->can('delete category')
-            ]
+                'delete' => $request->user()?->can('delete category'),
+            ],
         ];
     }
 }

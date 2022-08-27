@@ -60,6 +60,7 @@ const { filters, isLoading } = useFilters({
 </script>
 
 <template>
+
     <Head :title="title" />
 
     <BreezeAuthenticatedLayout>
@@ -71,17 +72,9 @@ const { filters, isLoading } = useFilters({
 
         <Container>
             <AddNew>
-                <Button
-                    v-if="can.create"
-                    :href="route(`admin.${routeResourceName}.create`)"
-                    >Add New</Button
-                >
+                <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
                 <template #filters>
-                    <Filters
-                        v-model="filters"
-                        :categories="categories"
-                        class="mt-4"
-                    />
+                    <Filters v-model="filters" :categories="categories" />
                 </template>
             </AddNew>
 
@@ -112,16 +105,12 @@ const { filters, isLoading } = useFilters({
                             {{ item.created_at_formatted }}
                         </Td>
                         <Td>
-                            <Actions
-                                :edit-link="
-                                    route(`admin.${routeResourceName}.edit`, {
-                                        id: item.id,
-                                    })
-                                "
-                                :show-edit="item.can.edit"
-                                :show-delete="item.can.delete"
-                                @deleteClicked="showDeleteModal(item)"
-                            />
+                            <Actions :edit-link="
+                                route(`admin.${routeResourceName}.edit`, {
+                                    id: item.id,
+                                })
+                            " :show-edit="item.can.edit" :show-delete="item.can.delete"
+                                @deleteClicked="showDeleteModal(item)" />
                         </Td>
                     </template>
                 </Table>

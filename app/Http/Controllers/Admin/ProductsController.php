@@ -66,7 +66,6 @@ class ProductsController extends Controller
                 $request->featured !== null,
                 fn (Builder $builder) => $builder->where('featured', $request->featured)
             )
-
             ->when(
                 $request->showOnSlider !== null,
                 fn (Builder $builder) => $builder->where('show_on_slider', $request->showOnSlider)
@@ -125,10 +124,12 @@ class ProductsController extends Controller
     public function create()
     {
         return Inertia::render('Product/Create', [
-            'title' => 'Add Product',
             'edit' => false,
+            'title' => 'Add Product',
             'routeResourceName' => $this->routeResourceName,
-            'categories' => ProductResource::collection(Category::root()->with(['children:id,name,parent_id'])->get(['id', 'name'])),
+            'categories' => CategoryResource::collection(
+                Category::root()->with(['children:id,name,parent_id'])->get(['id', 'name'])
+            ),
         ]);
     }
 

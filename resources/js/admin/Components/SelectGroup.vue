@@ -2,7 +2,8 @@
 import Label from "@/Components/Label.vue";
 import Input from "@/Components/Input.vue";
 import InputError from "@/Components/InputError.vue";
-import Select from "./Select.vue";
+import Select from "@/Components/Select.vue";
+
 defineProps({
     modelValue: {},
     items: Array,
@@ -32,16 +33,10 @@ defineProps({
 <template>
     <div>
         <Label v-if="label" :value="label" />
-        <Select
-            class="mt-1"
-            :model-value="modelValue"
-            @updated:model-value="$emit('update:modelValue', $event)"
-            :items="items"
-            :item-text="itemText"
-            :item-value="itemValue"
-            :without-select="withoutSelect"
-            v-bind="$attrs"
-        />
+        <Select class="mt-1" :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
+            :items="items" :item-text="itemText" :item-value="itemValue" :without-select="withoutSelect"
+            v-bind="$attrs" />
+
         <InputError v-if="errorMessage" class="mt-1" :message="errorMessage" />
     </div>
 </template>

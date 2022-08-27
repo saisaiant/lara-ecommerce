@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -11,14 +12,14 @@ class Product extends Model
 {
     use HasFactory;
 
-    /**
-     * The roles that belong to the Product
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function scopeActive($builder)
@@ -26,7 +27,7 @@ class Product extends Model
         return $builder->where('active', true);
     }
 
-    public function scopeAInctive($builder)
+    public function scopeInActive($builder)
     {
         return $builder->where('active', false);
     }

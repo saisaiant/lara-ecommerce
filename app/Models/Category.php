@@ -12,7 +12,7 @@ class Category extends Model
     use HasFactory;
 
     protected $casts = [
-        'active' => 'boolean'
+        'active' => 'boolean',
     ];
 
     public function children(): HasMany
@@ -35,7 +35,7 @@ class Category extends Model
         return $builder->where('active', true);
     }
 
-    public function scopeAInctive($builder)
+    public function scopeInActive($builder)
     {
         return $builder->where('active', false);
     }

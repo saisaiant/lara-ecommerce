@@ -40,7 +40,7 @@ const classes = `inline-flex items-center  border border-transparent rounded-md 
 
 <template>
     <Link v-if="href" :href="href" :class="classes">
-        <slot />
+    <slot />
     </Link>
     <button v-else :type="type" :class="classes">
         <slot />

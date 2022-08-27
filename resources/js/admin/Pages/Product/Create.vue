@@ -1,6 +1,6 @@
 <script setup>
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
-import { computed, onMounted, watch } from "vue";
+import { computed, watch } from "vue";
 import kebabCase from "lodash/kebabCase";
 import replace from "lodash/replace";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
@@ -66,27 +66,26 @@ watch(
     }
 );
 
+watch(
+    () => form.categoryId,
+    () => {
+        form.subCategoryId = "";
+    }
+);
 const submit = () => {
     props.edit
         ? form.put(
-              route(`admin.${props.routeResourceName}.update`, {
-                  id: props.item.id,
-              })
-          )
+            route(`admin.${props.routeResourceName}.update`, {
+                id: props.item.id,
+            })
+        )
         : form.post(route(`admin.${props.routeResourceName}.store`));
 };
 
-// onMounted(() => {
-//     if (props.edit) {
-//         form.name = props.item.name;
-//         form.slug = props.item.slug;
-//         form.active = props.item.active;
-//         form.parentId = props.item.parent_id;
-//     }
-// });
 </script>
 
 <template>
+
     <Head :title="title" />
 
     <BreezeAuthenticatedLayout>
@@ -100,60 +99,25 @@ const submit = () => {
             <Card>
                 <form @submit.prevent="submit">
                     <div class="grid grid-cols-2 gap-6">
-                        <InputGroup
-                            label="Name"
-                            v-model="form.name"
-                            :error-message="form.errors.name"
-                            required
-                        />
-                        <InputGroup
-                            label="Slug"
-                            v-model="form.slug"
-                            :error-message="form.errors.slug"
-                            required
-                        />
-                        <InputGroup
-                            label="Cost Price"
-                            v-model="form.costPrice"
-                            :error-message="form.errors.costPrice"
-                            required
-                        />
-                        <InputGroup
-                            label="Selling Price"
-                            v-model="form.price"
-                            :error-message="form.errors.price"
-                            required
-                        />
+                        <InputGroup label="Name" v-model="form.name" :error-message="form.errors.name" required />
+                        <InputGroup label="Slug" v-model="form.slug" :error-message="form.errors.slug" required />
+                        <InputGroup label="Cost Price" type="number" v-model="form.costPrice"
+                            :error-message="form.errors.costPrice" required />
+                        <InputGroup label="Selling Price" type="number" v-model="form.price"
+                            :error-message="form.errors.price" required />
                         <div class="col-span-2">
                             <div class="grid grid-cols-2 gap-6">
-                                <SelectGroup
-                                    label="Category"
-                                    v-model="form.categoryId"
-                                    :items="categories"
-                                    :error-message="form.errors.categoryId"
-                                />
-                                <SelectGroup
-                                    v-if="subCategories.length > 0"
-                                    label="Sub Category"
-                                    v-model="form.subCategoryId"
-                                    :items="subCategories"
-                                    :error-message="form.errors.subCategoryId"
-                                />
+                                <SelectGroup label="Category" v-model="form.categoryId" :items="categories"
+                                    :error-message="form.errors.categoryId" />
+                                <SelectGroup v-if="subCategories.length > 0" label="Sub Category"
+                                    v-model="form.subCategoryId" :items="subCategories"
+                                    :error-message="form.errors.subCategoryId" />
                             </div>
                         </div>
                         <div class="col-span-2 flex items-center space-x-2">
-                            <CheckboxGroup
-                                label="Active"
-                                v-model:checked="form.active"
-                            />
-                            <CheckboxGroup
-                                label="Featured"
-                                v-model:checked="form.featured"
-                            />
-                            <CheckboxGroup
-                                label="Show on Slider"
-                                v-model:checked="form.showOnSlider"
-                            />
+                            <CheckboxGroup label="Active" v-model:checked="form.active" />
+                            <CheckboxGroup label="Featured" v-model:checked="form.featured" />
+                            <CheckboxGroup label="Show on Slider" v-model:checked="form.showOnSlider" />
                         </div>
                     </div>
                     <div class="mt-4">
