@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\PurifyHtml;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'featured' => 'boolean',
+        'show_on_slider' => 'boolean',
+        'active' => 'boolean',
+        'description' => PurifyHtml::class
+    ];
 
     public function categories(): BelongsToMany
     {

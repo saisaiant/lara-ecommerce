@@ -10,6 +10,7 @@ import Button from "@/Components/Button.vue";
 import InputGroup from "@/Components/InputGroup.vue";
 import SelectGroup from "@/Components/SelectGroup.vue";
 import CheckboxGroup from "@/Components/CheckboxGroup.vue";
+import EditorGroup from "@/Components/EditorGroup.vue";
 
 const props = defineProps({
     edit: {
@@ -113,6 +114,10 @@ const submit = () => {
                                     v-model="form.subCategoryId" :items="subCategories"
                                     :error-message="form.errors.subCategoryId" />
                             </div>
+                        </div>
+                        <div class="col-span-2">
+                            <EditorGroup label="Description" v-model="form.description"
+                                :error-message="form.errors.description" />
                         </div>
                         <div class="col-span-2 flex items-center space-x-2">
                             <CheckboxGroup label="Active" v-model:checked="form.active" />

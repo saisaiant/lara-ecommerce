@@ -20,6 +20,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@tinymce/tinymce-vue": "^4.0.7",
         "tw-elements": "^1.0.0-alpha12"
     }
 }

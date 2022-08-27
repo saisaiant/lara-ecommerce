@@ -3,14 +3,11 @@
 namespace App\Http\Requests\Admin;
 
 use App\Models\User;
-use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Category;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Collection;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
-use PhpParser\ErrorHandler\Collecting;
 
 class ProductsRequest extends FormRequest
 {
@@ -38,10 +35,10 @@ class ProductsRequest extends FormRequest
             'description' => ['bail', 'required', 'string'],
             'costPrice' => ['bail', 'required', 'integer'],
             'price' => ['bail', 'required', 'integer'],
-            'featured' => ['bail','boolean'],
+            'featured' => ['bail', 'boolean'],
             'showOnSlider' => ['bail', 'boolean'],
             'active' => ['bail', 'boolean'],
-            'categoryId' => ['bail','required', Rule::exists(Category::class, 'id')->whereNull('parent_id')],
+            'categoryId' => ['bail', 'required', Rule::exists(Category::class, 'id')->whereNull('parent_id')],
             'subCategoryId' => ['bail', 'nullable', Rule::exists(Category::class, 'id')->whereNotNull('parent_id')],
         ];
     }

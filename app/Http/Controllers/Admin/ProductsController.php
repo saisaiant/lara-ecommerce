@@ -135,31 +135,34 @@ class ProductsController extends Controller
 
     public function store(ProductsRequest $request)
     {
-        $data = $request->safe()->only(['name', 'slug', 'active']);
-        $data['parent_id'] = $request->parentId;
+        // $data = $request->safe()->only(['name', 'slug', 'active']);
+        // $data['parent_id'] = $request->parentId;
 
-        $product = Product::create($data);
+        $product = Product::create($request->saveData());
+        $product->categories()->attach($request->categoryIds());
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Product created successfully');
     }
 
     public function edit(Product $product)
     {
+        $product->load(['categories:id,parent_id']);
+
         return Inertia::render('Product/Create', [
             'edit' => true,
             'title' => 'Edit Product',
             'item' => new ProductResource($product),
             'routeResourceName' => $this->routeResourceName,
-            'rootProducts' => ProductResource::collection(Product::root()->where('id', '!==', '$product->id')->get(['id', 'name'])),
+            'categories' => CategoryResource::collection(
+                Category::root()->with(['children:id,name,parent_id'])->get(['id', 'name'])
+            ),
         ]);
     }
 
     public function update(ProductsRequest $request, Product $product)
     {
-        $data = $request->safe()->only(['name', 'slug', 'active']);
-        $data['parent_id'] = $request->parentId;
-
-        $product->update($data);
+        $product->update($request->saveData());
+        $product->categories()->sync($request->categoryIds());
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Product updated successfully');
     }
