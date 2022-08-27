@@ -1,24 +1,30 @@
 <script setup>
+import { Inertia } from "@inertiajs/inertia"
 
+defineProps({
+    links: Array,
+})
+function goToUrl(link) {
+    Inertia.get(link.url);
+}
+
+function isDisabled(link) {
+    return link.url === null || link.active;
+}
 </script>
 <template>
-    <nav aria-label="Page navigation example">
+    <nav class="flex justify-center">
         <ul class="flex list-style-none">
-            <li class="page-item"><a
-                    class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 focus:shadow-none"
-                    href="#">Previous</a></li>
-            <li class="page-item"><a
-                    class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                    href="#">1</a></li>
-            <li class="page-item"><a
-                    class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                    href="#">2</a></li>
-            <li class="page-item"><a
-                    class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                    href="#">3</a></li>
-            <li class="page-item"><a
-                    class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                    href="#">Next</a></li>
+            <li class="page-item" v-for="link in links" :key="link.label">
+                <button
+                    class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded focus:shadow-none"
+                    href="#" :class="{
+                        'text-gray-400 cursor-not-allowed': isDisabled(link),
+                        'text-gray-800': !isDisabled(link),
+                        'bg-blue-500': link.active
+                    }" v-html="link.label" @click.prevent="goToUrl(link)">
+                </button>
+            </li>
         </ul>
     </nav>
 </template>

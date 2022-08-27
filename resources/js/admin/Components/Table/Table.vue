@@ -1,6 +1,7 @@
 <script setup>
 import Th from "@/Components/Table/Th.vue";
 import Td from "@/Components/Table/Td.vue";
+import Pagination from "@/Components/Table/Pagination.vue";
 
 defineProps({
     headers: {
@@ -27,11 +28,7 @@ defineProps({
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            class="border-b"
-                            v-for="item in items.data"
-                            :key="item.id"
-                        >
+                        <tr class="border-b" v-for="item in items.data" :key="item.id">
                             <slot :item="item"></slot>
                         </tr>
                         <tr v-if="items.data.length === 0">
@@ -43,5 +40,8 @@ defineProps({
                 </table>
             </div>
         </div>
+    </div>
+    <div v-if="items.data.links > 3" class="py-2">
+        <Pagination :links="items.data.links" />
     </div>
 </template>

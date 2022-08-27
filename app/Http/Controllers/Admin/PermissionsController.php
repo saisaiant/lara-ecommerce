@@ -25,14 +25,14 @@ class PermissionsController extends Controller
     public function index(Request $request)
     {
         $permissions = Permission::query()
-        ->select([
-            'id',
-            'name',
-            'created_at'
-        ])
-        ->when($request->name, fn(Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
-        ->latest('id')
-        ->paginate(30);
+            ->select([
+                'id',
+                'name',
+                'created_at'
+            ])
+            ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
+            ->latest('id')
+            ->paginate(10);
 
         return Inertia::render('Permission/Index', [
             'title' => 'Permissions',
