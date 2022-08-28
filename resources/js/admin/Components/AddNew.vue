@@ -18,14 +18,13 @@ const showFilters = ref(props.show ?? false);
         <div class="flex items-center justify-between">
             <slot />
 
-            <Button
-                v-if="$slots.filters"
-                color="white"
-                @click="showFilters = !showFilters"
-            >
+            <Button v-if="$slots.filters" color="white" @click="showFilters = !showFilters">
                 <FilterIcon class="w-4 h-4" />
             </Button>
         </div>
-        <slot v-if="showFilters" name="filters" />
+        <div v-if="showFilters" class="mt-4">
+            <slot name="filters" />
+        </div>
+        <!-- <slot v-if="showFilters" name="filters" /> -->
     </div>
 </template>

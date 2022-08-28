@@ -18,7 +18,8 @@ export default function (params) {
 
     function fetchItems() {
         Inertia.get(route(`admin.${routeResourceName}.index`), {
-            ...filters.value, page:1
+            ...filters.value, 
+            page: 1
         }, {
             preserveState: true,
             preserveScroll: true,

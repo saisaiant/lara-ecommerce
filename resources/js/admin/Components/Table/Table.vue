@@ -41,7 +41,8 @@ defineProps({
             </div>
         </div>
     </div>
-    <div v-if="items.data.links > 3" class="py-2">
-        <Pagination :links="items.data.links" />
+    <!-- v-if="items.meta.links > 3" -->
+    <div v-if="items.meta.links.length > 3" class="py-2">
+        <Pagination :links="items.meta.links" />
     </div>
 </template>
