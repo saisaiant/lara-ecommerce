@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,6 +28,7 @@ class ProductFactory extends Factory
             'featured' => $this->faker->boolean(),
             'show_on_slider' => $this->faker->boolean(),
             'active' => $this->faker->boolean(70),
+            'creator_id' => User::factory()
         ];
     }
 }
